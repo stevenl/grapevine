@@ -6,7 +6,7 @@ inc/
 Build
 Build.bat
 .last_cover_stats
-log/development.log
+log/
 Makefile
 Makefile.old
 MANIFEST.bak
