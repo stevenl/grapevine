@@ -21,6 +21,7 @@ sub startup {
 
     # Normal route to controller
     $r->get('/')->to('example#welcome');
+    $r->get('/deals/:dealid')->to('deals#show');
 }
 
 1;
