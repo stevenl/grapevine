@@ -1,0 +1,12 @@
+% layout 'default';
+
+<h2><%= $title %></h2>
+
+<div id="deals">
+<% for my $deal (@$deals) { %>
+  <div class="deal">
+    <h3><a href="/deals/<%= $deal->deal_id %>"><%= $deal->title %></a></h3>
+    <p><%= $deal->description_teaser %></p>
+  </div>
+<% } %>
+</div>

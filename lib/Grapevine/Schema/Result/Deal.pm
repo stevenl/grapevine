@@ -4,8 +4,10 @@ use parent 'DBIx::Class::Core';
 use Const::Fast;
 use Time::Piece 'localtime';
 
-const my $TIMESTAMP_FORMAT => '%Y-%m-%d %H:%M:%S';
 const my @MODIFIABLE_COLUMNS => qw( title description );
+const my $TEASER_LENGTH => 250;
+const my $TIMESTAMP_FORMAT => '%Y-%m-%d %H:%M:%S';
+
 sub now { localtime()->strftime($TIMESTAMP_FORMAT) }
 
 __PACKAGE__->table('deal');
@@ -58,6 +60,17 @@ sub store_column {
 
     $self->next::method($name, $value);
     return;
+}
+
+sub description_teaser {
+    my $self = shift;
+
+    my $description = $self->description;
+
+    $description = sprintf "%.${TEASER_LENGTH}s ...", $description
+        if length $description > $TEASER_LENGTH;
+
+    return $description;
 }
 
 1;

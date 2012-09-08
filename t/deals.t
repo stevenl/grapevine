@@ -16,39 +16,67 @@ $t->app->schema($schema);
 # populate database
 my @data; eval slurp \*DATA;
 $t->app->schema->resultset('Deal')->new($data[0])->insert;
-
-# show
-my $data = $data[0];
-$t->get_ok('/deals/1')
-  ->status_is(200)
-  ->text_is('#deal h2' => $data->{title})
-  ->text_is('.description' => $data->{description});
-
-# show (non-existent)
-$t->get_ok('/deals/0')
-  ->status_is(500)
-  ->text_is('head title' => 'Page not found');
+sleep 1;
 
 # new
-$t->get_ok('/deals/new');
-my $form = $t->ua->get('/deals/new')->res->dom->at('form');
-ok( $form, 'has form' );
-is( $form->{method}, 'post', 'is post form' );
-is( $form->{action}, '/deals/new/submit', 'submit action' );
+{
+    $t->get_ok('/deals/new')->status_is(200);
+    my $form = $t->ua->get('/deals/new')->res->dom->at('form');
+    ok( $form, 'has form' );
+    is( $form->{method}, 'post', 'is post form' );
+    is( $form->{action}, '/deals/new/submit', 'submit action' );
 
-my $title = $form->p->[0]->input;
-is( $title->{name}, 'title', 'has title input' );
-is( $title->{type}, 'text', 'is text input' );
+    my $title = $form->p->[0]->input;
+    is( $title->{name}, 'title', 'has title input' );
+    is( $title->{type}, 'text', 'is text input' );
 
-is( $form->p->[1]->textarea->{name}, 'description', 'has description textarea' );
+    is( $form->p->[1]->textarea->{name}, 'description', 'has description textarea' );
+}
 
 # submit new
-$data = $data[1];
-$t->ua->max_redirects(5);
-$t->post_form_ok('/deals/new/submit' => $data)
-  ->status_is(200)
-  ->text_is('#deal h2' => $data->{title})
-  ->text_is('.description' => $data->{description});
+{
+    my $data = $data[1];
+    $t->ua->max_redirects(5);
+    $t->post_form_ok('/deals/new/submit' => $data)
+      ->status_is(200)
+      ->text_is('#deal h2' => $data->{title})
+      ->text_is('.description' => $data->{description});
+}
+
+# show
+{
+    my $data = $data[0];
+    $t->get_ok('/deals/1')
+      ->status_is(200)
+      ->text_is('#deal h2' => $data->{title})
+      ->text_is('.description' => $data->{description});
+
+    # show (non-existent)
+    $t->get_ok('/deals/0')
+      ->status_is(500)
+      ->text_is('head title' => 'Page not found');
+}
+
+# list
+{
+    $t->get_ok('/deals')
+      ->status_is(200)
+      ->text_is('body h2' => 'Latest Deals');
+
+    my $deals = $t->ua->get('/deals')->res->dom->at('#deals');
+
+    my $deal = $deals->div->[0];
+    is( $deal->h3->all_text, $data[$#data]{title}, 'list title' );
+    is( $deal->h3->a->{href}, '/deals/'.scalar(@data), 'list title with hyperlinked' );
+
+    my $description = $deal->p->text;
+    is( length $description, 254, 'teaser trimmed' );
+    ok( $description =~ / \.{3}$/, 'teaser with ellipses' );
+
+    foreach (0 .. $#data) {
+        is( $deals->div->[$_]->h3->all_text, $data[ $#data - $_ ]{title}, "list order $_" );
+    }
+}
 
 done_testing();
 

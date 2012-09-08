@@ -37,4 +37,17 @@ sub show {
     $self->render('deals/show')
 }
 
+sub list {
+    my $self = shift;
+
+    $self->stash(title => 'Latest Deals');
+
+    my @deals = $self->db->resultset('Deal')->search(
+        undef, { order_by => { -desc => 'created'} }
+    );
+    $self->stash(deals => \@deals);
+
+    $self->render('deals/list');
+}
+
 1;

@@ -26,6 +26,7 @@ sub startup {
     $r->get('/deals/new')->to('deals#enter_new');
     $r->post('/deals/new/submit')->to('deals#submit_new');
     $r->get('/deals/:dealid')->to('deals#show');
+    $r->get('/deals')->to('deals#list');
 }
 
 1;
