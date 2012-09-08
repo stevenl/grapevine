@@ -21,6 +21,10 @@ sub startup {
 
     # Normal route to controller
     $r->get('/')->to('example#welcome');
+
+    # deals
+    $r->get('/deals/new')->to('deals#enter_new');
+    $r->post('/deals/new/submit')->to('deals#submit_new');
     $r->get('/deals/:dealid')->to('deals#show');
 }
 
