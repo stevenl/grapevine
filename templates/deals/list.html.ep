@@ -5,7 +5,7 @@
 <div id="deals">
 <% for my $deal (@$deals) { %>
   <div class="deal">
-    <h3><a href="/deals/<%= $deal->deal_id %>"><%= $deal->title %></a></h3>
+    <h3><a href="/deals/<%= $deal->id %>"><%= $deal->title %></a></h3>
     <p><%= $deal->description_teaser %></p>
   </div>
 <% } %>

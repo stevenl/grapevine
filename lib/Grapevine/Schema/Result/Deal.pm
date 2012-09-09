@@ -8,7 +8,7 @@ __PACKAGE__->load_components('+Grapevine::Schema::Component::Timestamp');
 __PACKAGE__->table('deal');
 
 __PACKAGE__->add_columns(
-    deal_id => {
+    id => {
         data_type => 'serial',
         is_nullable => 0,
         is_auto_increment => 1,

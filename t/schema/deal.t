@@ -30,7 +30,7 @@ my $rec;
 
     my $rec = $dbh->selectrow_hashref('select * from deal');
     isa_ok( $rec, 'HASH', 'inserted' );
-    is( $rec->{deal_id}, 1, 'deal id' );
+    is( $rec->{id}, 1, 'deal id' );
     is( $rec->{title}, $data{title}, 'title' );
     is( $rec->{description}, $data{description}, 'description' );
     isnt( $rec->{created},  undef, 'created' );

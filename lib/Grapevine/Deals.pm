@@ -18,14 +18,14 @@ sub submit_new {
     $new_deal->insert;
 
     # show the newly submitted deal
-    my $deal_id = $new_deal->deal_id;
+    my $deal_id = $new_deal->id;
     $self->redirect_to("/deals/$deal_id");
 }
 
 sub show {
     my $self = shift;
 
-    my $deal_id = $self->param('dealid');
+    my $deal_id = $self->param('deal_id');
     my $deal = $self->db->resultset('Deal')->find($deal_id);
 
     $self->render_not_found if ! defined $deal;
