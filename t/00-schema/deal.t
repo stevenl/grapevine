@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 20;
+use Test::More tests => 19;
 use Test::Fatal;
 
 BEGIN { use_ok 'Grapevine::Schema' }
@@ -29,13 +29,12 @@ my $deal = $deal_rs->new(\%data);
 $deal->insert;
 {
     my $rec = $dbh->selectrow_hashref('select * from deal');
-    isa_ok $rec, 'HASH', 'inserted';
     is $rec->{id}, 1, 'deal id';
     is $rec->{title}, $data{title}, 'title';
     is $rec->{description}, $data{description}, 'description';
 
-    isnt $rec->{created},  undef, 'created';
-    isnt $rec->{modified}, undef, 'modified';
+    like $rec->{created},  qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'created';
+    like $rec->{modified}, qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'modified';
     is $rec->{deleted}, undef, 'deleted';
     is $rec->{created}, $rec->{modified}, 'created == modified';
     is $deal->created, $rec->{created}, 'timestamp format';
@@ -66,7 +65,7 @@ $deal->update;
 }
 
 # teaser
-my $description = 'Quisque neque nulla, interdum eget aliquam sit amet, egestas a magna.';
+$description = 'Quisque neque nulla, interdum eget aliquam sit amet, egestas a magna.';
 my $long_teaser = $deal->description_teaser;
 $deal->description( $description );
 {

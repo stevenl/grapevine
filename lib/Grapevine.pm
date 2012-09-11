@@ -4,9 +4,9 @@ use Mojo::Base 'Mojolicious';
 use Grapevine::Schema;
 
 has schema => sub {
-    my $dsn = "dbi:Pg:dbname=$ENV{GV_DBNAME}";
     return Grapevine::Schema->connect(
-        $dsn, $ENV{GV_DBUSER}, $ENV{GV_DBPASS}, {RaiseError => 1}
+        "dbi:Pg:dbname=$ENV{GV_DBNAME}", $ENV{GV_DBUSER}, $ENV{GV_DBPASS},
+        { RaiseError => 1, quote_char => '"' }
     );
 };
 
