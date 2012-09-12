@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 24;
+use Test::More;
 use Test::Mojo;
 
 my @data = (
@@ -25,7 +25,8 @@ $t->app->schema->resultset('Deal')->new($data[0])->insert;
       ->status_is(200)
       ->element_exists('form[method="post"][action="/deals/new/submit"]')
       ->element_exists('form input[name="title"][type="text"]')
-      ->element_exists('form textarea[name=description]');
+      ->element_exists('form textarea[name=description]')
+      ->element_exists('form input[type="submit"]');
 }
 
 # submit new

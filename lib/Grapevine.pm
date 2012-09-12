@@ -22,6 +22,13 @@ sub startup {
     # Normal route to controller
     $r->get('/')->to('example#welcome');
 
+    # users
+    $r->get('/users/new')->to('users#enter_new');
+    $r->post('/users/new/submit')->to('users#submit_new');
+    $r->get('/users/login')->to('users#login');
+    $r->post('/users/login/submit')->to('users#submit_login');
+    $r->get('/users/logout')->to('users#logout');
+
     # deals
     $r->get('/deals/new')->to('deals#enter_new');
     $r->post('/deals/new/submit')->to('deals#submit_new');

@@ -1,0 +1,18 @@
+% layout 'default';
+
+<h2>Login</h2>
+
+<p><%= $error %></p>
+
+<form action="/users/login/submit" method="post">
+  <p>
+    <label for="title">Username</label>
+    <input name="username" type="text" size="30" maxlength="60" value="<%= $username %>" />
+  </p>
+  <p>
+    <label for="title">Password</label>
+    <input name="password" type="password" size="30" maxlength="60" />
+  </p>
+
+  <p><input type="submit" value="Enter" /></p>
+</form>
