@@ -2,6 +2,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Test::Fatal;
 
 BEGIN { use_ok 'Grapevine::Schema' }
 
@@ -42,5 +43,8 @@ $user->insert;
     ok $user->authenticate( $data{password} ), 'authenticate';
     ok ! $user->authenticate('LetMeIn'), 'wrong password';
 }
+
+$user = $user_rs->new({ username => 'johndoe', password => 'notunique', email => 'notunique@example.com' });
+like exception { $user->insert }, qr/violates unique constraint/, 'username must be unique';
 
 done_testing();
