@@ -1,8 +1,12 @@
 package Grapevine::Schema::Result::User;
 use parent 'DBIx::Class::Core';
 
-use Class::Method::Modifiers;
+use strict;
+use warnings;
+use feature 'switch';
+
 use Crypt::Eksblowfish::Bcrypt 'bcrypt_hash';
+use Email::Valid;
 
 my %BCRYPT_SETTINGS = (
     key_nul => 1,
@@ -50,14 +54,27 @@ __PACKAGE__->add_unique_constraint(['username']); # with btree index
 sub store_column {
     my ($self, $col, $val) = @_;
 
-    # store password as encrypted hash
-    if ($col eq 'password') {
-        # generate and store the salt for authentication
-        my $salt = $self->generate_salt;
-        $self->salt( $salt );
+    for ($col) {
+        when ('username') {
+            die 'username is required'      if ! $val;
+            die 'username is invalid'       if $val !~ /^[\w\.\-]+$/;
+            die 'username is not available' if $self->result_source->resultset->find({username => $val})
+        }
+        when ('password') {
+            die 'password is required' if ! $val;
 
-        $val = $self->bcrypt($val, $salt);
+            # generate and store salt
+            my $salt = $self->generate_salt;
+            $self->salt($salt);
+            # encrypt password
+            $val = $self->bcrypt($val, $salt);
+        }
+        when ('email') {
+            die 'email is required' if ! $val;
+            die 'email is invalid'  if ! Email::Valid->address($val);
+        }
     }
+
     return $self->next::method($col, $val);
 }
 
@@ -79,5 +96,5 @@ sub bcrypt {
     my %settings = ( %BCRYPT_SETTINGS, salt => $salt );
     return bcrypt_hash(\%settings, $string);
 }
-1;
 
+1;

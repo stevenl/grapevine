@@ -26,6 +26,7 @@ my %data = (
     password => 'letmein',
     email => 'johndoe@example.com',
 );
+
 my $user = $user_rs->new(\%data);
 $user->insert;
 {
@@ -44,7 +45,45 @@ $user->insert;
     ok ! $user->authenticate('LetMeIn'), 'wrong password';
 }
 
-$user = $user_rs->new({ username => 'johndoe', password => 'notunique', email => 'notunique@example.com' });
-like exception { $user->insert }, qr/violates unique constraint/, 'username must be unique';
+# data validation
+# username
+{
+    like(
+        exception { $user_rs->new({ username => '', password => 'anything', email => 'anything@example.com' }) },
+        qr/^username is required/, 'username is required'
+    );
+    like exception { $user->username('') }, qr/^username is required/, 'username is required';
 
-done_testing();
+    ok $user_rs->new({ username => 'John_Doe-1.23', password => 'anything', email => 'anything@example.com' }), 'username allowed characters';
+    like(
+        exception { $user_rs->new({ username => 'John_Doe!-1.23', password => 'anything', email => 'anything@example.com' }) },
+        qr/^username is invalid/, 'username disallowed characters'
+    );
+    like(
+        exception { $user_rs->new({ username => 'johndoe', password => 'anything', email => 'anything@example.com' }) },
+        qr/^username is not available/, 'username is not available'
+    );
+}
+# password
+{
+    like(
+        exception { $user_rs->new({ username => 'anything', password => '', email => 'anything@example.com' }) },
+        qr/^password is required/, 'password is required'
+    );
+    like exception { $user->password('') }, qr/^password is required/, 'password is required';
+}
+# email
+{
+    like(
+        exception { $user_rs->new({ username => 'anything', password => 'anything', email => '' }) },
+        qr/^email is required/, 'email is required'
+    );
+    like exception { $user->email('') }, qr/^email is required/, 'email is required';
+    like(
+        exception { $user_rs->new({ username => 'anything', password => 'anything', email => 'invalid email address' }) },
+        qr/^email is invalid/, 'email is invalid'
+    );
+    like exception { $user->email('invalid email address') }, qr/^email is invalid/, 'email is invalid';
+}
+
+done_testing;

@@ -13,7 +13,7 @@
   </p>
   <p>
     <label for="email">Email</label>
-    <input name="email" type="text" size="80" maxlength="127" />
+    <input name="email" type="text" size="60" maxlength="127" />
   </p>
 
   <p><input type="submit" value="Submit" /></p>
