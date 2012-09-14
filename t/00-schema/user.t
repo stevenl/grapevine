@@ -82,15 +82,31 @@ is User->count, 0, 'empty';
 # relationship deals
 {
     my $user = User->find(1);
+    is $user->deals_rs->result_class, 'Grapevine::Schema::Result::Deal', 'deals relationship';
+    is $user->deals_rs->count, 0;
+
     fixtures_ok 'deals';
-    is $user->deals_rs->count, 2, 'deals relationship';
+    is $user->deals_rs->count, 2;
 }
 
 # relationship questions
 {
     my $user = User->find(1);
+    is $user->questions_rs->result_class, 'Grapevine::Schema::Result::Question', 'questions relationship';
+    is $user->questions_rs->count, 0;
+
     fixtures_ok 'questions';
-    is $user->questions_rs->count, 2, 'questions relationship';
+    is $user->questions_rs->count, 2;
+}
+
+# relationship answers
+{
+    my $user = User->find(1);
+    is $user->answers_rs->result_class, 'Grapevine::Schema::Result::Answer', 'answers relationship';
+    is $user->answers_rs->count, 0;
+
+    fixtures_ok 'answers';
+    is $user->answers_rs->count, 2;
 }
 
 done_testing;

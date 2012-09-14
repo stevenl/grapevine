@@ -20,7 +20,7 @@ my %question = (
 
     my $question = Question->find(1);
     is_fields [qw( title description )], $question, [ @question{qw(title description)} ];
-    is $question->user->username, 'johndoe', 'user';
+    isa_ok $question->user, 'Grapevine::Schema::Result::User', 'user relationship';
 
     like $question->created,  qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'created';
     like $question->modified, qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'modified';
@@ -57,6 +57,16 @@ my %question = (
     $question = Question->find(1);
     is $question->description, $description, 'update description';
     ok $question->modified gt $last_modified, 'modified updated';
+}
+
+# answers relationship
+{
+    my $question = Question->find(1);
+    is $question->answers_rs->result_class, 'Grapevine::Schema::Result::Answer', 'answers relationship';
+    is $question->answers_rs->count, 0;
+
+    fixtures_ok 'answers';
+    is $question->answers_rs->count, 2;
 }
 
 done_testing;

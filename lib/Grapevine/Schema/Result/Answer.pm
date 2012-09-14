@@ -1,13 +1,12 @@
-package Grapevine::Schema::Result::Question;
+package Grapevine::Schema::Result::Answer;
 use parent 'DBIx::Class::Core';
 
 use strict;
 use warnings;
-use feature 'switch';
 
 __PACKAGE__->load_components('+Grapevine::Schema::Component::Timestamp');
 
-__PACKAGE__->table('question');
+__PACKAGE__->table('answer');
 
 __PACKAGE__->add_columns(
     id => {
@@ -15,17 +14,16 @@ __PACKAGE__->add_columns(
         is_nullable => 0,
         is_auto_increment => 1,
       },
-    title => {
-        data_type => 'varchar',
-        size      => 255,
-        is_nullable => 0,
-      },
-    description => {
-        data_type => 'text',
-        is_nullable => 1,
-      },
     user_id => {
         data_type => 'serial',
+        is_nullable => 0,
+      },
+    question_id => {
+        data_type => 'serial',
+        is_nullable => 0,
+      },
+    content => {
+        data_type => 'text',
         is_nullable => 0,
       },
     created => {
@@ -44,19 +42,12 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('id');
 
 __PACKAGE__->belongs_to(user => 'Grapevine::Schema::Result::User', 'user_id');
-__PACKAGE__->has_many(answers => 'Grapevine::Schema::Result::Answer', 'question_id');
+__PACKAGE__->belongs_to(question => 'Grapevine::Schema::Result::Question', 'question_id');
 
 sub store_column {
     my ($self, $col, $val) = @_;
 
-    for ($col) {
-        when ('title') {
-            die 'title is required' if ! $val;
-        }
-        when ('user_id') {
-            die 'user_id is required' if ! $val;
-        }
-    }
+    die 'content is required' if $col eq 'content' && ! $val;
 
     return $self->next::method($col, $val);
 }

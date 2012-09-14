@@ -20,7 +20,7 @@ my %deal = (
 
     my $deal = Deal->find(1);
     is_fields [qw( title description )], $deal, [ @deal{qw(title description)} ];
-    is $deal->user->username, 'johndoe', 'user';
+    isa_ok $deal->user, 'Grapevine::Schema::Result::User', 'user relationship';
 
     like $deal->created,  qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'created';
     like $deal->modified, qr/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/, 'modified';
