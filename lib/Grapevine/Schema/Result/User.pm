@@ -51,6 +51,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key('id');
 __PACKAGE__->add_unique_constraint(['username']); # with btree index
 
+__PACKAGE__->has_many(deals => 'Grapevine::Schema::Result::Deal', 'user_id');
+
 sub store_column {
     my ($self, $col, $val) = @_;
 

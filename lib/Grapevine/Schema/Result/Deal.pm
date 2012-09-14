@@ -1,6 +1,10 @@
 package Grapevine::Schema::Result::Deal;
 use parent 'DBIx::Class::Core';
 
+use strict;
+use warnings;
+use feature 'switch';
+
 my $TEASER_LENGTH = 250;
 
 __PACKAGE__->load_components('+Grapevine::Schema::Component::Timestamp');
@@ -22,6 +26,10 @@ __PACKAGE__->add_columns(
         data_type => 'text',
         is_nullable => 1,
       },
+    user_id => {
+        data_type => 'serial',
+        is_nullable => 0,
+      },
     created => {
         data_type => 'timestamp',
         is_nullable => 0,
@@ -36,6 +44,23 @@ __PACKAGE__->add_columns(
 );
 
 __PACKAGE__->set_primary_key('id');
+
+__PACKAGE__->belongs_to(user => 'Grapevine::Schema::Result::User', 'user_id');
+
+sub store_column {
+    my ($self, $col, $val) = @_;
+
+    for ($col) {
+        when ('title') {
+            die 'title is required' if ! $val;
+        }
+        when ('user_id') {
+            die 'user_id is required' if ! $val;
+        }
+    }
+
+    return $self->next::method($col, $val);
+}
 
 sub description_teaser {
     my $self = shift;

@@ -3,21 +3,23 @@ use warnings;
 
 use Test::More;
 use Test::Mojo;
+use Test::DBIx::Class {force_drop_table => 1}, 'Deal';
 
 my @data = (
   {
+    user_id => 1,
     title => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut purus orci, eu tristique nisl.',
     description => 'Praesent semper, tortor in vehicula ullamcorper, massa purus gravida nunc, vitae eleifend erat risus et libero. Nulla nisi lorem, vehicula et consequat in, cursus at metus. Aenean eleifend dictum ipsum a venenatis. Mauris pellentesque commodo arcu sit amet fermentum. Integer porta varius sem, eget blandit quam tempus a. Praesent condimentum tortor odio, ac mattis mauris. Cras iaculis ullamcorper interdum. Donec odio augue, vehicula nec rhoncus non, aliquet id ante. Nullam a malesuada nisl. Aliquam viverra tempor leo ut malesuada. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pretium quam et felis eleifend et rhoncus sapien tincidunt.',
   }, {
+    user_id => 1,
     title => 'Sed consectetur, neque ut lacinia vestibulum, arcu odio placerat eros, sit amet egestas risus quam vitae nibh.',
     description => 'Quisque neque nulla, interdum eget aliquam sit amet, egestas a magna.',
   }
 );
 
-# create and populate database
 my $t = Test::Mojo->new('Grapevine');
-$t->app->schema->deploy({ add_drop_table => 1 });
-$t->app->schema->resultset('Deal')->new($data[0])->insert;
+fixtures_ok 'users';
+Deal->new($data[0])->insert;
 
 # new
 {
