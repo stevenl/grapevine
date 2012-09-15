@@ -5,7 +5,8 @@ use Grapevine::Schema;
 
 has schema => sub {
     return Grapevine::Schema->connect(
-        "dbi:Pg:dbname=$ENV{GV_DBNAME}", $ENV{GV_DBUSER}, $ENV{GV_DBPASS},
+        "dbi:Pg:dbname=$ENV{GV_DBNAME};host=$ENV{GV_DBNAME};port=$ENV{GV_DBPORT};",
+        $ENV{GV_DBUSER}, $ENV{GV_DBPASS},
         { RaiseError => 1, quote_char => '"' }
     );
 };

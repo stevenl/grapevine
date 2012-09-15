@@ -1,4 +1,10 @@
 www:
   type: perl
+  environment:
+    GV_DBNAME: grapevine
+    GV_DBHOST: grapevine-stevenl.dotcloud.com
+    GV_DBPORT: 36772
+    GV_DBUSER: root
+    GV_DBPASS: hhgZeXm8H9iMB8ogy4hc
 db:
   type: postgresql

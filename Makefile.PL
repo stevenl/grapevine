@@ -9,6 +9,7 @@ WriteMakefile(
     PREREQ_PM => {
         Class::Method::Modifiers => '1.08',
         Crypt::Eksblowfish::Bcrypt => '0.008',
+        DBD::Pg => '2.18',
         DBIx::Class => '0.08120',
         Email::Valid => '0.15',
         Mojolicious => '3.02',
