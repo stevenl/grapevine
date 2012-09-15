@@ -29,6 +29,12 @@ sub startup {
     $r->post('/users/login/submit')->to('users#submit_login');
     $r->get('/users/logout')->to('users#logout');
 
+    # questions
+    $r->get('/questions/new')->to('questions#enter_new');
+    $r->post('/questions/new/submit')->to('questions#submit_new');
+    $r->get('/questions/:question_id')->to('questions#show');
+    $r->get('/questions')->to('questions#list');
+
     # deals
     $r->get('/deals/new')->to('deals#enter_new');
     $r->post('/deals/new/submit')->to('deals#submit_new');

@@ -11,11 +11,10 @@ sub enter_new {
 sub submit_new {
     my $self = shift;
 
-    my $new_deal = $self->db->resultset('Deal')->new( {
+    my $new_deal = $self->db->resultset('Deal')->create( {
         title       => $self->param('title'),
         description => $self->param('description'),
     } );
-    $new_deal->insert;
 
     # show the newly submitted deal
     my $deal_id = $new_deal->id;

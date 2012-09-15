@@ -1,0 +1,11 @@
+% layout 'default';
+
+<h2><%= $title %></h2>
+
+<div id="questions">
+% for my $question (@$questions) {
+  <div class="question">
+    <h3><a href="/questions/<%= $question->id %>"><%= $question->title %></a></h3>
+  </div>
+% }
+</div>

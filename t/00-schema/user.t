@@ -112,7 +112,7 @@ is User->count, 0, 'empty';
 # relationship question votes
 {
     my $user = User->find(1);
-    is $user->questions_voted_rs->result_class, 'Grapevine::Schema::Result::QuestionVote', 'questions_voted relationship';
+    is $user->question_votes_rs->result_class, 'Grapevine::Schema::Result::QuestionVote', 'questions_voted relationship';
     is $user->question_votes_rs->count, 0;
 
     fixtures_ok 'question_votes';

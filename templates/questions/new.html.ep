@@ -1,0 +1,13 @@
+% layout 'default';
+
+<h2>Enter a New Question</h2>
+
+<form action="/questions/new/submit" method="post">
+  <p>
+    <label for="title">Title</label>
+    <input name="title" type="text" size="60" maxlength="255" />
+  </p>
+  <p><textarea name="description" rows="15" cols="60"></textarea></p>
+
+  <p><input type="submit" value="Post New Question" /></p>
+</form>
