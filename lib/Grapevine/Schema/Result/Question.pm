@@ -45,6 +45,7 @@ __PACKAGE__->set_primary_key('id');
 
 __PACKAGE__->belongs_to(user => 'Grapevine::Schema::Result::User', 'user_id');
 __PACKAGE__->has_many(answers => 'Grapevine::Schema::Result::Answer', 'question_id');
+__PACKAGE__->has_many(votes => 'Grapevine::Schema::Result::QuestionVote', 'question_id');
 
 sub store_column {
     my ($self, $col, $val) = @_;
@@ -59,6 +60,11 @@ sub store_column {
     }
 
     return $self->next::method($col, $val);
+}
+
+sub sum_votes {
+    my $self = shift;
+    return $self->votes_rs->get_column('value')->sum || 0;
 }
 
 1;

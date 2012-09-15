@@ -69,4 +69,17 @@ my %question = (
     is $question->answers_rs->count, 2;
 }
 
+# votes relationship
+{
+    fixtures_ok 'questions';
+    my $question = Question->find(2);
+    is $question->votes_rs->result_class, 'Grapevine::Schema::Result::QuestionVote', 'votes relationship';
+    is $question->votes_rs->count, 0;
+    is $question->sum_votes, 0, 'sum vote 0';
+
+    fixtures_ok 'question_votes';
+    is $question->votes_rs->count, 1;
+    is $question->sum_votes, -1, 'sum votes';
+}
+
 done_testing;
