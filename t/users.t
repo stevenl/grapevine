@@ -3,6 +3,7 @@ use warnings;
 
 use Test::More;
 use Test::Mojo;
+use Test::DBIx::Class {force_drop_table => 1}, 'User';
 
 my %data1 = (
     username => 'johndoe',
@@ -17,8 +18,7 @@ my %data2 = (
 
 my $t = Test::Mojo->new('Grapevine');
 $t->ua->max_redirects(5);
-$t->app->schema->deploy({ add_drop_table => 1 });
-$t->app->schema->resultset('User')->new(\%data1)->insert;
+User->create(\%data1);
 
 # new
 {

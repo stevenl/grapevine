@@ -5,7 +5,7 @@ use Grapevine::Schema;
 
 has schema => sub {
     return Grapevine::Schema->connect(
-        "dbi:Pg:dbname=$ENV{GV_DBNAME};host=$ENV{GV_DBNAME};port=$ENV{GV_DBPORT};",
+        "dbi:Pg:dbname=$ENV{GV_DBNAME};host=$ENV{GV_DBHOST};port=$ENV{GV_DBPORT};",
         $ENV{GV_DBUSER}, $ENV{GV_DBPASS},
         { RaiseError => 1, quote_char => '"' }
     );
@@ -15,6 +15,9 @@ has schema => sub {
 sub startup {
     my $self = shift;
 
+    for (qw[ GV_DBNAME GV_DBHOST GV_DBPORT GV_DBUSER GV_DBPASS ]) {
+        die "Environment variable '$_' must be set" if ! defined $ENV{$_};
+    }
     $self->helper(db => sub { $self->app->schema });
 
     # Router
