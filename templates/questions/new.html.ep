@@ -1,5 +1,8 @@
 % layout 'default';
 
+<link rel="stylesheet" href="/tinyeditor/style.css" />
+<script type="text/javascript" src="/tinyeditor/tinyeditor.js"></script>
+
 <h2>Enter a New Question</h2>
 
 <form action="/questions/new/submit" method="post">
@@ -7,7 +10,27 @@
     <label for="title">Title</label>
     <input name="title" type="text" size="60" maxlength="255" />
   </p>
-  <p><textarea name="description" rows="15" cols="60"></textarea></p>
+  <p><textarea name="description" id="teditor" rows="15" cols="60"></textarea></p>
 
   <p><input type="submit" value="Post New Question" /></p>
 </form>
+
+<script type="text/javascript">
+new TINY.editor.edit('editor',{
+    id:'teditor',
+	width:584,
+	height:175,
+	cssclass:'te',
+	controlclass:'tecontrol',
+	rowclass:'teheader',
+	dividerclass:'tedivider',
+	controls:['bold','italic','underline','strikethrough','|',
+			  'orderedlist','unorderedlist','outdent','indent','style','|',
+			  'image','link','unlink','hr','n',
+			  'cut','copy','paste','undo','redo','unformat'],
+	xhtml:true,
+	cssfile:'style.css',
+	bodyid:'editor',
+	resize:{cssclass:'resize'}
+});
+</script>
