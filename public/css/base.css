@@ -1,0 +1,64 @@
+html { height:100% }
+
+body {
+	font-family: Arial,	Helvetica, sans-serif;
+	font-size: 75%;
+	line-height: 1.5em;
+	height: 100%;
+	background-color: #eeebda;
+}
+
+.wrapper {
+	width: 640px;
+	margin:	0 auto;
+}
+
+p {
+	margin:	10px 0;
+}
+
+a {
+    color: #4b7780;
+    text-decoration: none;
+}
+
+h1,	h2,	h3,	h4,	h5,	h6 {
+	font-family: "Times	New	Roman",	Times, Georgia,	"DejaVu	Serif",	serif;
+}
+
+h1 {
+	line-height: 1.5em;
+	font-size: 2.5em;
+}
+h2 {
+	line-height: 1.2em;
+	font-size: 2em;
+	border-bottom: thin solid #ccc;
+	margin: 20px 0 10px 0;
+	color: #4b7780;
+}
+h3 {
+    font-size: 1.5em;
+}
+
+/* hmenu */
+
+#hmenu {
+	line-height: 2.8em;
+	background-color: #3c3930;
+	color: #eeebda;
+	font-weight: bold;
+	font-size: 1.1em;
+	text-align:	right;
+}
+#hmenu li {
+    display: inline;
+    margin: 0 10px;
+}
+#hmenu a {
+    color: inherit;
+    text-decoration: none;
+}
+#hmenu a:hover {
+	color: white;
+}
