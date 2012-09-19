@@ -3,9 +3,9 @@
 <h2><%= $title %></h2>
 
 <div id="questions">
-% for my $question (@$questions) {
+% foreach my $q (@$questions) {
   <div class="question">
-    <h3><a href="/questions/<%= $question->id %>"><%= $question->title %></a></h3>
+    <h3><a href="<%= url_for 'question', question_id => $q->id %>"><%= $q->title %></a></h3>
   </div>
 % }
 </div>

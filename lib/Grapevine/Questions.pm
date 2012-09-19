@@ -6,12 +6,11 @@ sub enter_new {
 
     if ( ! $self->session('user') ) {
         $self->flash(message => 'You must log in to ask a question');
-        $self->session(url => '/questions/new');
+        $self->session(url => 'ask_question');
         return $self->redirect_to('login');
     }
 
-    $self->stash(title => 'Enter a New Question');
-    $self->render('questions/new');
+    $self->render('questions/ask');
 }
 
 sub submit_new {
@@ -23,8 +22,7 @@ sub submit_new {
     } );
 
     # show the newly submitted question
-    my $question_id = $new_question->id;
-    $self->redirect_to("/questions/$question_id");
+    $self->redirect_to('question', question_id => $new_question->id);
 }
 
 sub show {
@@ -35,11 +33,7 @@ sub show {
 
     $self->render_not_found if ! defined $question;
 
-    $self->stash(
-        question => $question,
-        title => $question->title,
-    );
-    $self->render('questions/show')
+    $self->render('questions/show', question => $question);
 }
 
 sub list {
@@ -50,9 +44,8 @@ sub list {
     my @questions = $self->db->resultset('Question')->search(
         undef, { order_by => { -desc => 'created'} }
     );
-    $self->stash(questions => \@questions);
 
-    $self->render('questions/list');
+    $self->render('questions/list', questions => \@questions);
 }
 
 1;

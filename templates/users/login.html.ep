@@ -5,7 +5,7 @@
 
 <p id="message"><%= flash 'message' %></p>
 
-<form action="/users/login/submit" method="post">
+<form action="<%= url_for 'submit_login' %>" method="post">
   <p>
     <label for="title">Username</label>
     <input name="username" type="text" size="30" maxlength="60" value="<%= flash 'username' %>" />

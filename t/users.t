@@ -22,9 +22,9 @@ User->create(\%data1);
 
 # new
 {
-    $t->get_ok('/users/new')
+    $t->get_ok('/users/signup')
       ->status_is(200)
-      ->element_exists('form[method="post"][action="/users/new/submit"]')
+      ->element_exists('form[method="post"][action="/users/signup/submit"]')
       ->element_exists('form input[name="username"][type="text"]')
       ->element_exists('form input[name="password"][type="password"]')
       ->element_exists('form input[name="email"][type="text"]')
@@ -33,7 +33,7 @@ User->create(\%data1);
 
 # submit new
 {
-    $t->post_form_ok('/users/new/submit' => \%data2)->status_is(200);
+    $t->post_form_ok('/users/signup/submit' => \%data2)->status_is(200);
     is $t->tx->req->url->path, '/';
 }
 

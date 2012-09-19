@@ -1,13 +1,14 @@
+% title 'Enter a Deal';
 % layout 'default';
 
-<h2>Enter a New Deal</h2>
+<h2>Enter a Deal</h2>
 
-<form action="/deals/new/submit" method="post">
+<form action="<%= url_for 'submit_deal' %>" method="post">
   <p>
     <label for="title">Title</label>
     <input name="title" type="text" size="60" maxlength="255" />
   </p>
   <p><textarea name="description" rows="15" cols="60"></textarea></p>
 
-  <p><input type="submit" value="Post New Deal" /></p>
+  <p><input type="submit" value="Post Your Deal" /></p>
 </form>

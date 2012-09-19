@@ -1,9 +1,10 @@
+% title $question->title;
 % layout 'default';
 
 <div id="question">
   <h2><%= $question->title %></h2>
 
   <div class="description">
-    <%= $question->description %>
+    %= $question->description
   </div>
 </div>

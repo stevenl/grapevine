@@ -1,18 +1,19 @@
+% title 'Ask a Question';
 % layout 'default';
 
 <link rel="stylesheet" href="/tinyeditor/style.css" />
 <script type="text/javascript" src="/tinyeditor/tinyeditor.js"></script>
 
-<h2>Enter a New Question</h2>
+<h2>Ask a Question</h2>
 
-<form action="/questions/new/submit" method="post">
+<form action=<%= url_for 'submit_question' %> method="post">
   <p>
     <label for="title">Title</label>
     <input name="title" type="text" size="60" maxlength="255" />
   </p>
   <p><textarea name="description" id="teditor" rows="15" cols="60"></textarea></p>
 
-  <p><input type="submit" value="Post New Question" /></p>
+  <p><input type="submit" value="Post Your Question" /></p>
 </form>
 
 <script type="text/javascript">

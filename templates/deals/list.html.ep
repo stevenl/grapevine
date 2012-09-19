@@ -3,10 +3,10 @@
 <h2><%= $title %></h2>
 
 <div id="deals">
-<% for my $deal (@$deals) { %>
+% foreach my $d (@$deals) {
   <div class="deal">
-    <h3><a href="/deals/<%= $deal->id %>"><%= $deal->title %></a></h3>
+    <h3><a href="<%= url_for 'deal', deal_id => $d->id %>"><%= $d->title %></a></h3>
     <p><%= $deal->description_teaser %></p>
   </div>
-<% } %>
+% }
 </div>

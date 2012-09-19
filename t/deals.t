@@ -19,7 +19,7 @@ my @data = (
 
 my $t = Test::Mojo->new('Grapevine');
 fixtures_ok 'users';
-Deal->new($data[0])->insert;
+Deal->create($data[0]);
 
 # new
 {

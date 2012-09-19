@@ -2,19 +2,19 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css">
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
     <title><%= title %></title>
   </head>
   <body>
     <div id="hmenu"><div class="wrapper">
       <ul>
       % if (! session 'user') {
-        <li><a href=<%= url_for 'login' %>>Log in</a></li>
-        <li><a href="/questions/new">Ask Question</a></li>
+        <li><a href="<%= url_for 'login' %>">Log in</a></li>
+        <li><a href="<%= url_for 'ask_question' %>">Ask Question</a></li>
       % } else {
         <li>Welcome <%= session 'username' %>!</li>
-        <li><a href="/questions/new">Ask Question</a></li>
-        <li><a href=<%= url_for 'logout' %>>Log out</a></li>
+        <li><a href="<%= url_for 'ask_question' %>">Ask Question</a></li>
+        <li><a href="<%= url_for 'logout' %>">Log out</a></li>
       % }
       </ul>
     </div></div>

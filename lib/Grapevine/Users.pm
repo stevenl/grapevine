@@ -3,24 +3,23 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub enter_new {
     my $self = shift;
-    $self->render('users/new');
+    $self->render('users/signup');
 }
 
 sub submit_new {
     my $self = shift;
 
-    my $new_user = $self->db->resultset('User')->new( {
+    my $new_user = $self->db->resultset('User')->create( {
         username => $self->param('username'),
         password => $self->param('password'),
         email    => $self->param('email'),
     } );
-    $new_user->insert;
 
     $self->session(
         user     => $new_user->id,
         username => $new_user->username,
     );
-    $self->redirect_to('/');
+    $self->redirect_to('home');
 }
 
 sub login {
@@ -50,13 +49,13 @@ sub submit_login {
     );
     return $self->redirect_to( $self->session('url') ) if $self->session('url');
 
-    $self->redirect_to('/');
+    $self->redirect_to('home');
 }
 
 sub logout {
     my $self = shift;
     $self->session(expires => 1);
-    $self->redirect_to('/');
+    $self->redirect_to('home');
 }
 
 1;

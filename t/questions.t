@@ -24,21 +24,21 @@ Question->create($data[0]);
 
 # new (must log in)
 {
-    $t->get_ok('/questions/new')
+    $t->get_ok('/questions/ask')
       ->status_is(200)
       ->text_is('#message' => 'You must log in to ask a question');
 
     $t->post_form_ok('/users/login/submit' => {username => 'johndoe', password => 'letmein'})
       ->status_is(200);
 
-    is $t->tx->req->url->path, '/questions/new';
+    is $t->tx->req->url->path, '/questions/ask';
 }
 
 # new
 {
-    $t->get_ok('/questions/new')
+    $t->get_ok('/questions/ask')
       ->status_is(200)
-      ->element_exists('form[method="post"][action="/questions/new/submit"]')
+      ->element_exists('form[method="post"][action="/questions/ask/submit"]')
       ->element_exists('form input[name="title"][type="text"]')
       ->element_exists('form textarea[name=description]')
       ->element_exists('form input[type="submit"]');
@@ -49,7 +49,7 @@ Question->create($data[0]);
     sleep 1;
     my $data = $data[1];
     $t->ua->max_redirects(5);
-    $t->post_form_ok('/questions/new/submit' => $data)
+    $t->post_form_ok('/questions/ask/submit' => $data)
       ->status_is(200)
       ->text_is('#question h2' => $data->{title})
       ->text_is('.description' => $data->{description});
