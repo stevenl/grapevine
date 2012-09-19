@@ -1,4 +1,4 @@
-% title $deal->title
+% title $deal->title;
 % layout 'default';
 
 <div id="deal">

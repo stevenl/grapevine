@@ -3,6 +3,13 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub enter_new {
     my $self = shift;
+
+    if ( ! $self->session('user') ) {
+        $self->flash(message => 'You must log in to post a deal');
+        $self->session(url => 'new_deal');
+        return $self->redirect_to('login');
+    }
+
     $self->render('deals/new');
 }
 

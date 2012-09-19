@@ -18,8 +18,21 @@ my @data = (
 );
 
 my $t = Test::Mojo->new('Grapevine');
+$t->ua->max_redirects(5);
 fixtures_ok 'users';
 Deal->create($data[0]);
+
+# new (must log in)
+{
+    $t->get_ok('/deals/new')
+      ->status_is(200)
+      ->text_is('#message' => 'You must log in to post a deal');
+
+    $t->post_form_ok('/users/login/submit' => {username => 'johndoe', password => 'letmein'})
+      ->status_is(200);
+
+    is $t->tx->req->url->path, '/deals/new';
+}
 
 # new
 {
@@ -35,7 +48,6 @@ Deal->create($data[0]);
 {
     sleep 1;
     my $data = $data[1];
-    $t->ua->max_redirects(5);
     $t->post_form_ok('/deals/new/submit' => $data)
       ->status_is(200)
       ->text_is('#deal h2' => $data->{title})
