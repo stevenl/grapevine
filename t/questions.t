@@ -18,8 +18,21 @@ my @data = (
 );
 
 my $t = Test::Mojo->new('Grapevine');
+$t->ua->max_redirects(5);
 fixtures_ok 'users';
 Question->create($data[0]);
+
+# new (must log in)
+{
+    $t->get_ok('/questions/new')
+      ->status_is(200)
+      ->text_is('#message' => 'You must log in to ask a question');
+
+    $t->post_form_ok('/users/login/submit' => {username => 'johndoe', password => 'letmein'})
+      ->status_is(200);
+
+    is $t->tx->req->url->path, '/questions/new';
+}
 
 # new
 {

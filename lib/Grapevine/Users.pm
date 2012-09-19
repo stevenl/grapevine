@@ -3,8 +3,6 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub enter_new {
     my $self = shift;
-
-    $self->stash(message => '') if ! defined $self->stash('message');
     $self->render('users/new');
 }
 
@@ -18,14 +16,15 @@ sub submit_new {
     } );
     $new_user->insert;
 
-    $self->session(username => $new_user->username);
+    $self->session(
+        user     => $new_user->id,
+        username => $new_user->username,
+    );
     $self->redirect_to('/');
 }
 
 sub login {
     my $self = shift;
-
-    $self->stash(error => '');
     $self->stash(username => '') if ! defined $self->stash('username');
     $self->render('users/login');
 }
@@ -38,12 +37,19 @@ sub submit_login {
     );
 
     if ( ! defined $user || ! $user->authenticate($self->param('password')) ) {
-        $self->stash( message => 'username or password is invalid' );
-        $self->stash( username => $self->param('username') );
-        return $self->render('users/login');
+        $self->flash(
+            message  => 'username or password is invalid',
+            username => $self->param('username'),
+        );
+        return $self->redirect_to('login');
     }
 
-    $self->session(username => $user->username);
+    $self->session(
+        user     => $user->id,
+        username => $user->username
+    );
+    return $self->redirect_to( $self->session('url') ) if $self->session('url');
+
     $self->redirect_to('/');
 }
 

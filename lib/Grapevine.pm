@@ -22,16 +22,14 @@ sub startup {
 
     # Router
     my $r = $self->routes;
-
-    # Normal route to controller
     $r->get('/')->to('example#welcome');
 
     # users
     $r->get('/users/new')->to('users#enter_new');
     $r->post('/users/new/submit')->to('users#submit_new');
-    $r->get('/users/login')->to('users#login');
+    $r->get('/users/login')->to('users#login')->name('login');
     $r->post('/users/login/submit')->to('users#submit_login');
-    $r->get('/users/logout')->to('users#logout');
+    $r->get('/users/logout')->to('users#logout')->name('logout');
 
     # questions
     $r->get('/questions/new')->to('questions#enter_new');

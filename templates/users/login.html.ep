@@ -1,13 +1,14 @@
+% title 'Log in';
 % layout 'default';
 
-<h2>Login</h2>
+<h2>Log in</h2>
 
-<p><%= $error %></p>
+<p id="message"><%= flash 'message' %></p>
 
 <form action="/users/login/submit" method="post">
   <p>
     <label for="title">Username</label>
-    <input name="username" type="text" size="30" maxlength="60" value="<%= $username %>" />
+    <input name="username" type="text" size="30" maxlength="60" value="<%= flash 'username' %>" />
   </p>
   <p>
     <label for="title">Password</label>

@@ -34,7 +34,7 @@ User->create(\%data1);
 # submit new
 {
     $t->post_form_ok('/users/new/submit' => \%data2)->status_is(200);
-    is $t->ua->app_url->path, '/';
+    is $t->tx->req->url->path, '/';
 }
 
 # login
@@ -47,10 +47,18 @@ User->create(\%data1);
       ->element_exists('form input[type="submit"]');
 }
 
+# submit login (fail authentication)
+{
+    $t->post_form_ok('/users/login/submit' => {username => 'badegg'})
+      ->status_is(200)
+      ->text_is('#message' => 'username or password is invalid')
+      ->element_exists('form input[name="username"][value="badegg"]');
+}
+
 # submit login
 {
     $t->post_form_ok('/users/login/submit' => \%data2)->status_is(200);
-    is $t->ua->app_url->path, '/';
+    is $t->tx->req->url->path, '/';
 }
 
 # logout

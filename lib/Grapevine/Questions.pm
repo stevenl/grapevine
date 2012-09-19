@@ -3,6 +3,13 @@ use Mojo::Base 'Mojolicious::Controller';
 
 sub enter_new {
     my $self = shift;
+
+    if ( ! $self->session('user') ) {
+        $self->flash(message => 'You must log in to ask a question');
+        $self->session(url => '/questions/new');
+        return $self->redirect_to('login');
+    }
+
     $self->stash(title => 'Enter a New Question');
     $self->render('questions/new');
 }
