@@ -7,4 +7,21 @@
   <div class="description">
     %= $question->description
   </div>
+
+  % if (@$answers > 0) {
+    <h2>Answers</h2>
+
+    % foreach my $a (@$answers) {
+      <div class="answer">
+        %= $a->content
+      </div>
+    % }
+  % }
+
+  <h2>Your Answer</h2>
+
+  <form action=<%= url_for 'submit_answer' %> method="post">
+    <p><textarea name="answer" rows="10" style="width:100%"><%= $new_answer %></textarea></p>
+    <p><input type="submit" value="Post Your Answer" /></p>
+  </form>
 </div>

@@ -47,6 +47,10 @@ sub startup {
     $r->get('/questions')->name('questions_list')
       ->to('questions#list');
 
+    # answers
+    $r->post('/questions/:question_id/answer/submit')->name('submit_answer')
+      ->to('questions#submit_answer');
+
     # deals
     $r->get('/deals/new')->name('new_deal')
       ->to('deals#enter_new');
